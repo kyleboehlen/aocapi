@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ExampleController extends Controller
+class AocController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -14,5 +14,8 @@ class ExampleController extends Controller
         //
     }
 
-    //
+    public function index($year, $day, $part)
+    {
+        return $year . '-' . $day . '-' . $part;
+    }
 }

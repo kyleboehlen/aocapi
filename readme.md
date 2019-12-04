@@ -86,11 +86,7 @@ Install the node dependancies
 <br/>
 
 ## Usage
-The API only accepts POST requests to https://www.aocapi.com/api/v1/ and takes 4 params:
-- year
-- day
-- part
-- input
+The API only accepts POST requests to https://www.aocapi.com/api/v1/{year}/{day}/{part} and takes the param 'input'.
 
 <br/>
 

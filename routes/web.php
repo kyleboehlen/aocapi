@@ -11,6 +11,14 @@
 |
 */
 
+// API Routes
+$router->group(['prefix' => 'api', 'middleware' => 'throttle:' . env('REQUEST_LIMIT') . ',1'], function () use ($router) {
+    // Version 1
+    $router->group(['prefix' => 'v1'], function () use ($router) {
+        // URL Params
+        $router->post('/{year}/{day}/{part}/', ['uses' => 'AocController@index']);
+    });
+});
 
 // Redirect all get requests to the github repo
 $router->get('/{route:.*}', function () use ($router) {
