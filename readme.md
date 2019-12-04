@@ -28,6 +28,9 @@ Create a copy of the enviroment file from the template
 `cp .env.example .env`
 
 <br/>
+Generate a 32 char key and set the APP_KEY in .env
+
+<br/>
 Point the ssl apache2 config entry to the public folder
 - Change to the apache2 root directory
 
@@ -81,3 +84,16 @@ Install the node dependancies
 `npm install`
 
 <br/>
+
+## Usage
+The API only accepts POST requests to https://www.aocapi.com/api/v1/ and takes 4 params:
+- year
+- day
+- part
+- input
+
+<br/>
+
+## To-Do
+- auth0
+- request limiting

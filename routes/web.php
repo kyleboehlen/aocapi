@@ -11,6 +11,8 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+
+// Redirect all get requests to the github repo
+$router->get('/{route:.*}', function () use ($router) {
+    return redirect(env('GITHUB_REPO'));
 });
