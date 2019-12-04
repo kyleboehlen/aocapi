@@ -79,11 +79,6 @@ Allow apache to serve the files
 `sudo chown -R www-data:{your_user_group} aocapi`
 
 <br/>
-Install the node dependancies
-
-`npm install`
-
-<br/>
 
 ## Usage
 The API only accepts POST requests to https://www.aocapi.com/api/v1/{year}/{day}/{part} and takes the param 'input'.
