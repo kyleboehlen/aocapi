@@ -56,6 +56,8 @@ class AocController extends Controller
             case 2017:
                 switch($day)
                 {
+                    case 1:
+                        return $this->buildResponse(\inverseCaptcha($input, $part));
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                     break;
