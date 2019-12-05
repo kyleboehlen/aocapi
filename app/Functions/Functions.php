@@ -115,13 +115,131 @@ function minMaxDiff($line, $even){
         }
     }
 
-    if(!$even){
+    if(!$even)
+    {
         $diff = $max - $min;
     }
 
 	return $diff;
 }
 
+// 2017-3
+function spiralMemory($input, $part)
+{
+    // logic for displaying which part
+    if($part == 1)
+    {
+        // finds the biggest value that would be located in the bottom right corner of "grid"
+        $width = ceil(sqrt($input));
+        if(($width % 2) == 0) $width++;
+        
+        // finds the biggest value in a """""""row""""""" in a million quotation marks
+        $max = $width * $width;
+        for($int = 0; $int < 4; $int++)
+        {
+            if($max - ($width - 1) >= $input)
+            {
+                $max -= ($width - 1);
+            }
+        }
+        
+        // finds the middle value so that you can find the distance from the mid to the input
+        $mid = $max - (floor($width / 2));
+        
+        // distance A is found by getting the absolute value of the middle value subtracted from the input
+        $distA = abs($input - $mid);
+        // distance B is found by rounding the down half of the width
+        $distB = floor($width / 2);
+        
+        $distance = $distA + $distB;
+
+        return $distance;
+    }
+    elseif($part == 2) // this might be a little overcomplicated but it simulates the whole process with a two dimensional array
+    {
+        $sum = 0;
+        $x = 0;
+        $y = 0;
+        $grid[$x][$y] = 1;
+        $dir = "R";
+        $pos = 0;
+        $len = 1;
+        $even = 0;
+        $partTwo = 0;
+        do
+        {
+            if($dir == "R") $x++; // logic for incrementing in the correct direction
+            else if($dir == "L") $x--;
+            else if($dir == "U") $y++;
+            else if($dir == "D") $y--;
+
+            for($i = $x-1; $i <= $x+1; $i++) // logic that checks every value around the current x, y
+            {      
+                for($j = $y-1; $j <= $y+1; $j++)
+                {
+                    if(isset($grid[$i][$j])) 
+                    {
+                        $sum += $grid[$i][$j];
+                    }
+                }
+            }
+            $grid[$x][$y] = $sum;    
+            $pos++;
+            $partTwo = $sum;
+            $sum = 0;
+            if($pos >= $len)  // logic for changing direction if necessary
+            {
+                $even++;
+                if(($even % 2) == 0) $len++;
+                $pos = 0;
+                switch($dir)
+                {
+                    case "R": $dir = "U";
+                        break;
+                    case "U": $dir = "L";
+                        break;
+                    case "L": $dir = "D";
+                        break;
+                    case "D": $dir = "R";
+                        break;
+                }
+            }
+        }while($grid[$x][$y] < $input);
+        return $partTwo;
+    }
+}
+
+// 2017-5
+function twistyTrampolines($input, $part)
+{
+    $steps = 0;
+    $current = 0;
+    $input = explode(PHP_EOL, $input);
+
+    while(isset($input[$current]))
+    {
+        $value = $input[$current];
+        if($part == 1) // according to past me, all I had to do was this :)
+        {
+            $input[$current] = $value + 1;
+        }
+        elseif($part == 2)
+        {
+            // this is part 2, if you want part 1 take away the ifelse and leave what's in the else statement :)
+            if($value >= 3)
+            {
+                $input[$current] = $value -1;
+            }
+            else
+            {
+                $input[$current] = $value + 1;
+            }
+        }        
+        $current += $value;
+        $steps++;
+    }
+    return $steps;
+}
 
 function chronalCalibration($input, $part)
 {
@@ -175,4 +293,93 @@ function chronalCalibration($input, $part)
     }
 
     return $output;
+}
+
+// 2019-1
+function tyrannyRocketEquation($input, $part)
+{
+    $ignore_fuel_mass = ($part == 1);
+
+    $array = explode(PHP_EOL, $input);
+
+    $output = 0;
+    foreach($array as $value)
+    {
+        $output += fuelRequired($value, $ignore_fuel_mass);
+    }
+
+    return $output;
+}
+
+// 2019-1
+function fuelRequired($mass, $ignore_fuel_mass)
+{
+    $fuel = floor(($mass / 3) - 2);
+
+    if($ignore_fuel_mass)
+    {
+        return $fuel;
+    }
+
+    if($fuel > 0)
+    {
+        return ($fuel + fuelRequired($fuel, $ignore_fuel_mass));
+    }
+
+    return 0;
+}
+
+// 2019-2
+function programAlarm($input, $part)
+{
+    $part_one = ($part == 1);
+
+    $array = explode(',', $input);
+
+    if($part_one)
+    {
+        $array[1] = 12;
+        $array[2] = 2;
+
+        return runIntcode($array);
+    }
+
+    $noun = 1;
+
+    while(true)
+    {
+        for($verb = 1; $verb < count($array); $verb++)
+        {
+            $array[1] = $noun;
+            $array[2] = $verb;
+
+            if(runIntcode($array) == 19690720)
+            {
+                return (100 * $noun + $verb);
+            }
+        }
+
+        $noun++;
+    }
+}
+
+// 2019-2
+function runIntcode($array)
+{
+    $i = 0;
+    while($array[$i] != 99)
+    {
+        if($array[$i] == 1)
+        {
+            $array[$array[$i + 3]] = $array[$array[$i + 1]] + $array[$array[$i + 2]];
+        }
+        else
+        {
+            $array[$array[$i + 3]] = $array[$array[$i + 1]] * $array[$array[$i + 2]];
+        }
+
+        $i += 4;
+    }
+
+    return $array[0];
 }

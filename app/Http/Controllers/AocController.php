@@ -62,9 +62,15 @@ class AocController extends Controller
                     case 2:
                         return $this->buildResponse(\corruptionChecksum($input, $part));
                         break;
+                    case 3:
+                        return $this->buildResponse(\spiralMemory($input, $part));
+                        break;
+                    case 5:
+                        return $this->buildResponse(\twistyTrampolines($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
-                    break;
+                        break;
                 }
                 break;
             case 2018:
@@ -72,18 +78,24 @@ class AocController extends Controller
                 {
                     case 1:
                         return $this->buildResponse(\chronalCalibration($input, $part));
-                    break;
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
-                    break;
+                        break;
                 }
                 break;
             case 2019:
                 switch($day)
                 {
+                    case 1:
+                        return $this->buildResponse(\tyrannyRocketEquation($input, $part));
+                        break;
+                    case 2:
+                        return $this->buildResponse(\programAlarm($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
-                    break;
+                        break;
                 }
                 break;
             default:
