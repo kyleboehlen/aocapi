@@ -58,6 +58,10 @@ class AocController extends Controller
                 {
                     case 1:
                         return $this->buildResponse(\inverseCaptcha($input, $part));
+                        break;
+                    case 2:
+                        return $this->buildResponse(\corruptionChecksum($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                     break;

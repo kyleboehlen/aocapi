@@ -54,3 +54,70 @@ function inverseCaptcha($raw_input, $part)
     
     return $output;
 }
+
+// 2017-2
+function corruptionChecksum($input, $part)
+{
+    $even = ($part == 2);
+
+    $checksum = 0;
+    $input = explode(PHP_EOL, $input);
+    foreach($input as $line)
+    {
+        $checksum += minMaxDiff($line, $even);
+    }
+    
+    return $checksum;
+}
+
+// 2017-2
+function minMaxDiff($line, $even){
+    // Format line
+    $line = trim($line);
+    $line = preg_replace('/\s+/', ',', $line);
+    $array = explode(",", $line);
+
+    // Set loop vars
+    $max = 0;
+    $min = 0;
+    $first = true;
+    foreach($array as $num)
+    {
+        if($even)
+        {
+            foreach($array as $num2)
+            {
+                if($num % $num2 == 0 && $num / $num2 > 1)
+                {
+                    $diff = $num / $num2;
+                }
+                elseif($num2 % $num == 0 && $num2 / $num > 1)
+                {
+                    $diff = $num2 / $num;
+                }
+            }
+        }
+        else
+        {
+            if($first)
+            {
+                $min = $num;
+                $first = false;
+            }
+            if($num < $min)
+            {
+                $min = $num;
+            }
+            if($num > $max)
+            {
+                $max = $num;
+            }
+        }
+    }
+    
+    if(!$even){
+        $diff = $max - $min;
+    }
+
+	return $diff;
+}
