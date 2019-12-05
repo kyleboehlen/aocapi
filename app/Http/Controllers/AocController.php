@@ -62,6 +62,12 @@ class AocController extends Controller
                     case 2:
                         return $this->buildResponse(\corruptionChecksum($input, $part));
                         break;
+                    case 3:
+                        return $this->buildResponse(\spiralMemory($input, $part));
+                        break;
+                    case 5:
+                        return $this->buildResponse(\twistyTrampolines($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                     break;
