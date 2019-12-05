@@ -70,7 +70,7 @@ class AocController extends Controller
                         break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
-                    break;
+                        break;
                 }
                 break;
             case 2018:
@@ -78,10 +78,10 @@ class AocController extends Controller
                 {
                     case 1:
                         return $this->buildResponse(\chronalCalibration($input, $part));
-                    break;
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
-                    break;
+                        break;
                 }
                 break;
             case 2019:
@@ -95,7 +95,7 @@ class AocController extends Controller
                         break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
-                    break;
+                        break;
                 }
                 break;
             default:
