@@ -271,7 +271,7 @@ function spiralMemory($input, $part){
             $pos++;
             $partTwo = $sum;
             $sum = 0;
-            if($pos >= $len)  // logic for changing direction if nessicary
+            if($pos >= $len)  // logic for changing direction if necessary
             {
                 $even++;
                 if(($even % 2) == 0) $len++;
@@ -291,4 +291,34 @@ function spiralMemory($input, $part){
         }while($grid[$x][$y] < $input);
         echo $partTwo;
     }
+}
+
+// 2017-5
+function twistyTrampolines($input, $part)
+{
+    $steps = 0;
+    $current = 0;
+    $input = explode(PHP_EOL, $input);
+
+    while(isset($input[$current])){
+        $value = $input[$current];
+        if($part == 1) // according to past me, all I had to do was this :)
+        {
+            $input[$current] = $value + 1;
+        }
+        elseif($part == 2)
+        {
+            // this is part 2, if you want part 1 take away the ifelse and leave what's in the else statement :)
+            if($value >= 3){
+                $input[$current] = $value -1;
+            }
+            else{
+                $input[$current] = $value + 1;
+            }
+        }        
+        $current += $value;
+        $steps++;
+    }
+
+    echo $steps;
 }
