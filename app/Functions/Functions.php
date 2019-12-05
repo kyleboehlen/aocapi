@@ -115,7 +115,8 @@ function minMaxDiff($line, $even){
         }
     }
 
-    if(!$even){
+    if(!$even)
+    {
         $diff = $max - $min;
     }
 
