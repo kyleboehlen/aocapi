@@ -210,3 +210,85 @@ function fuelRequired($mass, $ignore_fuel_mass)
 
     return 0;
 }
+
+// 2017-3
+function spiralMemory($input, $part){
+    // logic for displaying which part
+    if($part == 1)
+    {
+        // finds the biggest value that would be located in the bottom right corner of "grid"
+        $width = ceil(sqrt($input));
+        if(($width % 2) == 0) $width++;
+        
+        // finds the biggest value in a """""""row""""""" in a million quotation marks
+        $max = $width * $width;
+        for($int = 0; $int < 4; $int++)
+        {
+            if($max - ($width - 1) >= $input) { $max -= ($width - 1); }
+        }
+        
+        // finds the middle value so that you can find the distance from the mid to the input
+        $mid = $max - (floor($width / 2));
+        
+        // distance A is found by getting the absolute value of the middle value subtracted from the input
+        $distA = abs($input - $mid);
+        // distance B is found by rounding the down half of the width
+        $distB = floor($width / 2);
+        
+        $distance = $distA + $distB;
+
+        echo $distance;
+    }
+    elseif($part == 2) // this might be a little overcomplicated but it simulates the whole process with a two dimensional array
+    {
+        $sum = 0;
+        $x = 0;
+        $y = 0;
+        $grid[$x][$y] = 1;
+        $dir = "R";
+        $pos = 0;
+        $len = 1;
+        $even = 0;
+        $partTwo = 0;
+        do
+        {
+            if($dir == "R") $x++; // logic for incrementing in the correct direction
+            else if($dir == "L") $x--;
+            else if($dir == "U") $y++;
+            else if($dir == "D") $y--;
+
+            for($i = $x-1; $i <= $x+1; $i++) // logic that checks every value around the current x, y
+            {      
+                for($j = $y-1; $j <= $y+1; $j++)
+                {
+                    if(isset($grid[$i][$j])) 
+                    {
+                        $sum += $grid[$i][$j];
+                    }
+                }
+            }
+            $grid[$x][$y] = $sum;    
+            $pos++;
+            $partTwo = $sum;
+            $sum = 0;
+            if($pos >= $len)  // logic for changing direction if nessicary
+            {
+                $even++;
+                if(($even % 2) == 0) $len++;
+                $pos = 0;
+                switch($dir)
+                {
+                    case "R": $dir = "U";
+                        break;
+                    case "U": $dir = "L";
+                        break;
+                    case "L": $dir = "D";
+                        break;
+                    case "D": $dir = "R";
+                        break;
+                }
+            }
+        }while($grid[$x][$y] < $input);
+        echo $partTwo;
+    }
+}
