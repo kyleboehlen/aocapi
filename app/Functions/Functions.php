@@ -176,3 +176,37 @@ function chronalCalibration($input, $part)
 
     return $output;
 }
+
+// 2019-1
+function tyrannyRocketEquation($input, $part)
+{
+    $ignore_fuel_mass = ($part == 1);
+
+    $array = explode(PHP_EOL, $input);
+
+    $output = 0;
+    foreach($array as $value)
+    {
+        $output += fuelRequired($value, $ignore_fuel_mass);
+    }
+
+    return $output;
+}
+
+// 2019-1
+function fuelRequired($mass, $ignore_fuel_mass)
+{
+    $fuel = floor(($mass / 3) - 2);
+
+    if($ignore_fuel_mass)
+    {
+        return $fuel;
+    }
+
+    if($fuel > 0)
+    {
+        return ($fuel + fuelRequired($fuel, $ignore_fuel_mass));
+    }
+
+    return 0;
+}

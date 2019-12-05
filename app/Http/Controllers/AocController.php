@@ -81,6 +81,9 @@ class AocController extends Controller
             case 2019:
                 switch($day)
                 {
+                    case 1:
+                        return $this->buildResponse(\tyrannyRocketEquation($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                     break;
