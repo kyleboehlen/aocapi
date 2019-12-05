@@ -210,3 +210,29 @@ function fuelRequired($mass, $ignore_fuel_mass)
 
     return 0;
 }
+
+// 2019-2
+function programAlarm($input, $part)
+{
+    $array = explode(',', $input);
+
+    $array[1] = 12;
+    $array[2] = 2;
+
+    $i = 0;
+    while($array[$i] != 99)
+    {
+        if($array[$i] == 1)
+        {
+            $array[$array[$i + 3]] = $array[$array[$i + 1]] + $array[$array[$i + 2]];
+        }
+        else
+        {
+            $array[$array[$i + 3]] = $array[$array[$i + 1]] * $array[$array[$i + 2]];
+        }
+
+        $i += 4;
+    }
+
+    return $array[0];
+}

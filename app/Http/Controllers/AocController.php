@@ -84,6 +84,9 @@ class AocController extends Controller
                     case 1:
                         return $this->buildResponse(\tyrannyRocketEquation($input, $part));
                         break;
+                    case 2:
+                        return $this->buildResponse(\programAlarm($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                     break;
