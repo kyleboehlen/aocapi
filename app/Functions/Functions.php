@@ -332,11 +332,40 @@ function fuelRequired($mass, $ignore_fuel_mass)
 // 2019-2
 function programAlarm($input, $part)
 {
+    $part_one = ($part == 1);
+
     $array = explode(',', $input);
 
-    $array[1] = 12;
-    $array[2] = 2;
+    if($part_one)
+    {
+        $array[1] = 12;
+        $array[2] = 2;
 
+        return runIntcode($array);
+    }
+
+    $noun = 1;
+
+    while(true)
+    {
+        for($verb = 1; $verb < count($array); $verb++)
+        {
+            $array[1] = $noun;
+            $array[2] = $verb;
+
+            if(runIntcode($array) == 19690720)
+            {
+                return (100 * $noun + $verb);
+            }
+        }
+
+        $noun++;
+    }
+}
+
+// 2019-2
+function runIntcode($array)
+{
     $i = 0;
     while($array[$i] != 99)
     {
