@@ -30,6 +30,8 @@ Create a copy of the enviroment file from the template
 <br/>
 Generate a 32 char key and set the APP_KEY in .env
 
+`APP_KEY=`
+
 <br/>
 Point the ssl apache2 config entry to the public folder
 - Change to the apache2 root directory
@@ -85,6 +87,149 @@ The API only accepts POST requests to https://www.aocapi.com/api/v1/{year}/{day}
 
 <br/>
 
+## Contribution
+To add to the API add a function to the Functions.php file for the year/day that accepts `$input` and `$part`. Base the function name off the AoC title. Please comment your function with `// {year}-{day}`.
+
+<br/>
+Then map the function response in the AocController using the switch statement based on year/day.
+
+<br/>
+Update completed functions below
+
+### Functions:
+
+- 2015
+  - [ ] Day 1
+  - [ ] Day 2
+  - [ ] Day 3
+  - [ ] Day 4
+  - [ ] Day 5
+  - [ ] Day 6
+  - [ ] Day 7
+  - [ ] Day 8
+  - [ ] Day 9
+  - [ ] Day 10
+  - [ ] Day 11
+  - [ ] Day 12
+  - [ ] Day 13
+  - [ ] Day 14
+  - [ ] Day 15
+  - [ ] Day 16
+  - [ ] Day 17
+  - [ ] Day 18
+  - [ ] Day 19
+  - [ ] Day 20
+  - [ ] Day 21
+  - [ ] Day 22
+  - [ ] Day 23
+  - [ ] Day 24
+  - [ ] Day 25
+- 2016
+  - [ ] Day 1
+  - [ ] Day 2
+  - [ ] Day 3
+  - [ ] Day 4
+  - [ ] Day 5
+  - [ ] Day 6
+  - [ ] Day 7
+  - [ ] Day 8
+  - [ ] Day 9
+  - [ ] Day 10
+  - [ ] Day 11
+  - [ ] Day 12
+  - [ ] Day 13
+  - [ ] Day 14
+  - [ ] Day 15
+  - [ ] Day 16
+  - [ ] Day 17
+  - [ ] Day 18
+  - [ ] Day 19
+  - [ ] Day 20
+  - [ ] Day 21
+  - [ ] Day 22
+  - [ ] Day 23
+  - [ ] Day 24
+  - [ ] Day 25
+- 2017
+  - [x] Day 1
+  - [x] Day 2
+  - [x] Day 3
+  - [ ] Day 4
+  - [x] Day 5
+  - [ ] Day 6
+  - [ ] Day 7
+  - [ ] Day 8
+  - [ ] Day 9
+  - [ ] Day 10
+  - [ ] Day 11
+  - [ ] Day 12
+  - [ ] Day 13
+  - [ ] Day 14
+  - [ ] Day 15
+  - [ ] Day 16
+  - [ ] Day 17
+  - [ ] Day 18
+  - [ ] Day 19
+  - [ ] Day 20
+  - [ ] Day 21
+  - [ ] Day 22
+  - [ ] Day 23
+  - [ ] Day 24
+  - [ ] Day 25
+- 2018
+  - [x] Day 1
+  - [ ] Day 2
+  - [ ] Day 3
+  - [ ] Day 4
+  - [ ] Day 5
+  - [ ] Day 6
+  - [ ] Day 7
+  - [ ] Day 8
+  - [ ] Day 9
+  - [ ] Day 10
+  - [ ] Day 11
+  - [ ] Day 12
+  - [ ] Day 13
+  - [ ] Day 14
+  - [ ] Day 15
+  - [ ] Day 16
+  - [ ] Day 17
+  - [ ] Day 18
+  - [ ] Day 19
+  - [ ] Day 20
+  - [ ] Day 21
+  - [ ] Day 22
+  - [ ] Day 23
+  - [ ] Day 24
+  - [ ] Day 25
+- 2019
+  - [x] Day 1
+  - [ ] Day 2
+  - [ ] Day 3
+  - [ ] Day 4
+  - [ ] Day 5
+  - [ ] Day 6
+  - [ ] Day 7
+  - [ ] Day 8
+  - [ ] Day 9
+  - [ ] Day 10
+  - [ ] Day 11
+  - [ ] Day 12
+  - [ ] Day 13
+  - [ ] Day 14
+  - [ ] Day 15
+  - [ ] Day 16
+  - [ ] Day 17
+  - [ ] Day 18
+  - [ ] Day 19
+  - [ ] Day 20
+  - [ ] Day 21
+  - [ ] Day 22
+  - [ ] Day 23
+  - [ ] Day 24
+  - [ ] Day 25
+
+<br/>
+
 ## To-Do
 - auth0
-- request limiting
