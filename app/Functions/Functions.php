@@ -383,3 +383,135 @@ function runIntcode($array)
 
     return $array[0];
 }
+
+// 2019-3
+function crossedWires($input, $part)
+{
+    $parts = explode(PHP_EOL, $input);
+
+    $first_wire_coordinates = mapWires(explode(',', $parts[0]));
+    $second_wire_coordinates = mapWires(explode(',', $parts[1]));
+
+    $intersections = array();
+
+    for($j = 0; $j < count($first_wire_coordinates)-1; $j++)
+    {
+        for($k = 0; $k < count($second_wire_coordinates)-1; $k++)
+        {
+            // horizontal means y can't change
+            // vertical mean x can't change
+            $fc_x1 = $first_wire_coordinates[$j]['x'];
+            $fc_x2 = $first_wire_coordinates[$j+1]['x'];
+            $fc_y1 = $first_wire_coordinates[$j]['y'];
+            $fc_y2 = $first_wire_coordinates[$j+1]['y'];
+
+            $sc_x1 = $second_wire_coordinates[$k]['x'];
+            $sc_x2 = $second_wire_coordinates[$k+1]['x'];
+            $sc_y1 = $second_wire_coordinates[$k]['y'];
+            $sc_y2 = $second_wire_coordinates[$k+1]['y'];
+
+            if($fc_x1 == $fc_x2 && $sc_y1 == $sc_y2)
+            {
+                $x = $fc_x1;
+                $y = $sc_y1;
+
+                $top_x = ($sc_x1 > $sc_x2 ? $sc_x1 : $sc_x2);
+                $bottom_x = ($sc_x1 < $sc_x2 ? $sc_x1 : $sc_x2);
+
+                $top_y = ($fc_y1 > $fc_y2 ? $fc_y1 : $fc_y2);
+                $bottom_y = ($fc_y1 < $fc_y2 ? $fc_y1 : $fc_y2);
+
+                if(($x >= $bottom_x && $x <= $top_x) && ($y >= $bottom_y && $y <= $top_y))
+                {
+                    array_push($intersections, [
+                        'x' => $x,
+                        'y' => $y,
+                    ]);
+                }
+            }
+            elseif($sc_x1 == $sc_x2 && $fc_y1 == $fc_y2)
+            {
+                $x = $sc_x1;
+                $y = $fc_y1;
+
+                $top_x = ($fc_x1 > $fc_x2 ? $fc_x1 : $fc_x2);
+                $bottom_x = ($fc_x1 < $fc_x2 ? $fc_x1 : $fc_x2);
+
+                $top_y = ($sc_y1 > $sc_y2 ? $sc_y1 : $sc_y2);
+                $bottom_y = ($sc_y1 < $sc_y2 ? $sc_y1 : $sc_y2);
+
+                if(($x >= $bottom_x && $x <= $top_x) && ($y >= $bottom_y && $y <= $top_y))
+                {
+                    array_push($intersections, [
+                        'x' => $x,
+                        'y' => $y,
+                    ]);
+                }
+            }
+        }
+    }
+
+    $distance = 0;
+    $first = true;
+    foreach($intersections as $intersection)
+    {
+        $manhattan_distance = manhattanDistance($intersection);
+
+        if($first || $manhattan_distance < $distance)
+        {
+            $distance = $manhattan_distance;
+            $first = false;
+        }
+    }
+
+    return $distance;
+}
+
+// 2019-3
+function mapWires($paths)
+{
+    $array = array();
+
+    $x = $y = 0;
+    foreach($paths as $path)
+    {
+        $direction = substr($path, 0, 1);
+        $distance = substr($path, 1);
+    
+        switch($direction)
+        {
+            case 'R':
+                array_push($array, [
+                    'x' => $x += $distance,
+                    'y' => $y,
+                ]);
+                break;
+            case 'L':
+                array_push($array, [
+                    'x' => $x -= $distance,
+                    'y' => $y,
+                ]);
+                break;
+            case 'U':
+                array_push($array, [
+                    'x' => $x,
+                    'y' => $y += $distance,
+                ]);
+                break;
+            case 'D':
+                array_push($array, [
+                    'x' => $x,
+                    'y' => $y -= $distance,
+                ]);
+                break;
+        }
+    }
+
+    return $array;
+}
+
+// 2019-3
+function manhattanDistance($intersection)
+{
+    return abs($intersection['x']) + abs($intersection['y']); 
+}
