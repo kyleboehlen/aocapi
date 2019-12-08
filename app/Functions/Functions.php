@@ -387,6 +387,7 @@ function runIntcode($array)
 // 2019-3
 function crossedWires($input, $part)
 {
+    $part_one = ($part == 1);
     $parts = explode(PHP_EOL, $input);
 
     $first_wire_coordinates = mapWires(explode(',', $parts[0]));
@@ -451,20 +452,20 @@ function crossedWires($input, $part)
         }
     }
 
-    $distance = 0;
-    $first = true;
-    foreach($intersections as $intersection)
+    foreach($intersections as $key => $intersection)
     {
-        $manhattan_distance = manhattanDistance($intersection);
-
-        if($first || $manhattan_distance < $distance)
-        {
-            $distance = $manhattan_distance;
-            $first = false;
-        }
+        $intersections[$key]['manhattan_distance'] = manhattanDistance($intersection);
+        $intersections[$key]['total_latency'] = totalLatency($intersection, $parts);
     }
 
-    return $distance;
+    if($part_one)
+    {
+        return lowestManhattanDistance($intersections);
+    }
+    else
+    {
+        return lowestTotalLatency($intersections);
+    }
 }
 
 // 2019-3
@@ -514,4 +515,101 @@ function mapWires($paths)
 function manhattanDistance($intersection)
 {
     return abs($intersection['x']) + abs($intersection['y']); 
+}
+
+// 2019-3
+function totalLatency($intersection, $parts)
+{
+    $steps = 0;
+
+    foreach($parts as $part)
+    {
+        $x = 0;
+        $y = 0;
+
+        $paths = explode(',', $part);
+        $array = array();
+
+        foreach($paths as $path)
+        {
+            $direction = substr($path, 0, 1);
+            $distance = substr($path, 1);
+    
+            for($i = 0; $i < $distance; $i++)
+            {
+                switch($direction)
+                {
+                    case 'R':
+                        array_push($array, [
+                            'x' => ++$x,
+                            'y' => $y,
+                        ]);
+                        break;
+                    case 'L':
+                        array_push($array, [
+                            'x' => --$x,
+                            'y' => $y,
+                        ]);
+                        break;
+                    case 'U':
+                        array_push($array, [
+                            'x' => $x,
+                            'y' => ++$y,
+                        ]);
+                        break;
+                    case 'D':
+                        array_push($array, [
+                            'x' => $x,
+                            'y' => --$y,
+                        ]);
+                        break;
+                }
+    
+                $steps++;
+    
+                if($x == $intersection['x'] && $y == $intersection['y'])
+                {
+                    break 2;
+                }
+            }
+        }
+    }
+
+    return $steps;
+}
+
+// 2019-3
+function lowestManhattanDistance($intersections)
+{
+    $distance = 0;
+    $first = true;
+
+    foreach($intersections as $intersection)
+    {
+        if($first || $intersection['manhattan_distance'] < $distance)
+        {
+            $distance = $intersection['manhattan_distance'];
+            $first = false;
+        }
+    }
+
+    return $distance;
+}
+
+// 2019-3
+function lowestTotalLatency($intersections)
+{
+    $total_latency = 0;
+    $first = true;
+
+    foreach($intersections as $intersection)
+    {
+        if($first || $intersection['total_latency'] < $total_latency)
+        {
+            $total_latency = $intersection['total_latency'];
+            $first = false;
+        }
+    }
+
+    return $total_latency;
 }
