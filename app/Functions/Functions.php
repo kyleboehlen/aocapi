@@ -71,7 +71,8 @@ function corruptionChecksum($input, $part)
 }
 
 // 2017-2
-function minMaxDiff($line, $even){
+function minMaxDiff($line, $even)
+{
     // Format line
     $line = trim($line);
     $line = preg_replace('/\s+/', ',', $line);
@@ -364,24 +365,116 @@ function programAlarm($input, $part)
 }
 
 // 2019-2
-function runIntcode($array)
+function runIntcode($array, $diag = false, $input = 1)
 {
+    $mode1 = $mode2 = $mode3 = 0; // Position mode
     $i = 0;
-    while($array[$i] != 99)
+
+    do
     {
-        if($array[$i] == 1)
+        $len = strlen($array[$i]);
+        switch(true)
         {
-            $array[$array[$i + 3]] = $array[$array[$i + 1]] + $array[$array[$i + 2]];
-        }
-        else
-        {
-            $array[$array[$i + 3]] = $array[$array[$i + 1]] * $array[$array[$i + 2]];
+            case ($len >= 4):
+                $op_code = substr($array[$i], $len-2);
+                $mode1 = substr($array[$i], $len-3, 1);
+                $mode2 = substr($array[$i], $len-4, 1);
+                $mode3 = 0;
+            case ($len >= 5):
+                $mode3 = substr($len-5, 1);
+                break;
+            default:
+                $op_code = $array[$i];
+                $mode1 = $mode2 = $mode3 = 0;
+                break;
         }
 
-        $i += 4;
+        $op_code = intval($op_code);
+
+        switch($op_code)
+        {
+            case 1:
+                $index = $array[$i + 3];
+
+                switch($mode1)
+                {
+                    case 1:
+                        $val1 = $array[$i + 1];
+                        break;
+                    default: // Position mode
+                        $val1 = $array[$array[$i + 1]];
+                        break;
+                }
+
+                switch($mode2)
+                {
+                    case 1:
+                        $val2 = $array[$i + 2];
+                        break;
+                    default: // Position mode
+                        $val2 = $array[$array[$i + 2]];
+                        break;
+                }
+
+                $value = $val1 + $val2;
+                changeValue($array, $index, $value);
+                $i += 4;
+                break;
+            case 2:
+                $index = $array[$i + 3];
+
+                switch($mode1)
+                {
+                    case 1:
+                        $val1 = $array[$i + 1];
+                        break;
+                    default: // Position mode
+                        $val1 = $array[$array[$i + 1]];
+                        break;
+                }
+
+                switch($mode2)
+                {
+                    case 1:
+                        $va2 = $array[$i + 2];
+                        break;
+                    default:
+                        $val2 = $array[$array[$i + 2]];
+                        break;
+                }
+                
+                $value = $val1 * $val2;
+                changeValue($array, $index, $value);
+                $i += 4;
+                break;
+            case 3:
+                $index = $array[$i + 1];
+
+                changeValue($array, $index, $input);
+                $i += 2;
+                break;
+            case 4:
+                $diag_code = $array[$array[$i+1]];
+                $i += 2;
+                break;
+            case 99:
+                // halt op code
+                break 2;
+        }
+    }while(true);
+
+    if($diag)
+    {
+        return $diag_code;
     }
 
+    // Return first element
     return $array[0];
+}
+
+function changeValue(&$array, $index, $value)
+{
+    $array[$index] = intval($value);
 }
 
 // 2019-3
@@ -697,4 +790,12 @@ function adjacentDigits($chars, $part_two)
     }
 
     return false;
+}
+
+// 2019-5
+function sunnyWithAChangeOfAstroids($input, $part)
+{
+    $array = explode(',', $input);
+
+    return runIntcode($array, true, 1);
 }
