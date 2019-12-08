@@ -369,25 +369,31 @@ function runIntcode($array, $diag = false, $input = 1)
 {
     $mode1 = $mode2 = $mode3 = 0; // Position mode
     $i = 0;
-
+    $op_code_array = array();
     do
     {
-        $len = strlen($array[$i]);
-        switch(true)
-        {
-            case ($len >= 4):
-                $op_code = substr($array[$i], $len-2);
-                $mode1 = substr($array[$i], $len-3, 1);
-                $mode2 = substr($array[$i], $len-4, 1);
-                $mode3 = 0;
-            case ($len >= 5):
-                $mode3 = substr($len-5, 1);
-                break;
-            default:
-                $op_code = $array[$i];
-                $mode1 = $mode2 = $mode3 = 0;
-                break;
-        }
+        $str = str_pad($array[$i], 5, '0', STR_PAD_LEFT);
+
+        $op_code = substr($str, 3);
+        $mode1 = substr($str, 2, 1);
+        $mode2 = substr($str, 1, 1);
+        $mode3 = substr($str, 0, 1);
+
+        // switch(true)
+        // {
+        //     case ($len >= 4):
+        //         $op_code = substr($array[$i], $len-2);
+        //         $mode1 = substr($array[$i], $len-3, 1);
+        //         $mode2 = substr($array[$i], $len-4, 1);
+        //         $mode3 = 0;
+        //     case ($len >= 5):
+        //         $mode3 = substr($len-5, 1);
+        //         break;
+        //     default:
+        //         $op_code = $array[$i];
+        //         $mode1 = $mode2 = $mode3 = 0;
+        //         break;
+        // }
 
         $op_code = intval($op_code);
 
@@ -460,8 +466,11 @@ function runIntcode($array, $diag = false, $input = 1)
             case 99:
                 // halt op code
                 break 2;
+            default:
+                return "Op code $op_code not valid, ";
+                break;
         }
-    }while(true);
+    }while($op_code != 99);
 
     if($diag)
     {
@@ -474,7 +483,7 @@ function runIntcode($array, $diag = false, $input = 1)
 
 function changeValue(&$array, $index, $value)
 {
-    $array[$index] = intval($value);
+    $array[$index] = $value;
 }
 
 // 2019-3
