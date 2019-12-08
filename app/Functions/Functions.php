@@ -613,3 +613,88 @@ function lowestTotalLatency($intersections)
 
     return $total_latency;
 }
+
+// 2019-4
+function secureContainer($input, $part)
+{
+    $part_two = ($part == 2);
+
+    $parts = explode('-', $input);
+    $range_start = $parts[0];
+    $range_end = $parts[1];
+
+    $count = 0;
+
+    for($i = $range_start; $i <= $range_end; $i++)
+    {
+        if(validatePassword($i, $part_two))
+        {
+            $count++;
+        }
+    }
+
+    return $count;
+}
+
+function validatePassword($password, $part_two)
+{
+    // Password is 6 digits
+    if(!strlen($password) == 6)
+    {
+        return false;
+    }
+
+    $chars = str_split($password);
+
+    for($i = 0; $i < count($chars)-1; $i++)
+    {
+        if($chars[$i] > $chars[$i+1])
+        {
+            return false;
+        }
+    }
+
+    return adjacentDigits($chars, $part_two);
+}
+
+function adjacentDigits($chars, $part_two)
+{
+    for($i = 0; $i < count($chars)-1; $i++)
+    {
+        if($chars[$i] == $chars[$i+1])
+        {
+            if($part_two)
+            {
+                // 111123
+
+                if($i == 0)
+                {
+                    if($chars[$i] != $chars[$i+2])
+                    {
+                        return true;
+                    }
+                }
+                elseif($i >= 4)
+                {   
+                    if($chars[$i] != $chars[$i-1])
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if($chars[$i] != $chars[$i+2] && $chars[$i] != $chars[$i-1])
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

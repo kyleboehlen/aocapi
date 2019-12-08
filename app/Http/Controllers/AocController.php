@@ -96,6 +96,9 @@ class AocController extends Controller
                     case 3:
                         return $this->buildResponse(\crossedWires($input, $part));
                         break;
+                    case 4:
+                        return $this->buildResponse(\secureContainer($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                         break;
