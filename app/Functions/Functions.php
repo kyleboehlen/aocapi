@@ -369,7 +369,7 @@ function runIntcode($array, $diag = false, $input = 1)
 {
     $mode1 = $mode2 = $mode3 = 0; // Position mode
     $i = 0;
-    $op_code_array = array();
+
     do
     {
         $str = str_pad($array[$i], 5, '0', STR_PAD_LEFT);
@@ -378,22 +378,6 @@ function runIntcode($array, $diag = false, $input = 1)
         $mode1 = substr($str, 2, 1);
         $mode2 = substr($str, 1, 1);
         $mode3 = substr($str, 0, 1);
-
-        // switch(true)
-        // {
-        //     case ($len >= 4):
-        //         $op_code = substr($array[$i], $len-2);
-        //         $mode1 = substr($array[$i], $len-3, 1);
-        //         $mode2 = substr($array[$i], $len-4, 1);
-        //         $mode3 = 0;
-        //     case ($len >= 5):
-        //         $mode3 = substr($len-5, 1);
-        //         break;
-        //     default:
-        //         $op_code = $array[$i];
-        //         $mode1 = $mode2 = $mode3 = 0;
-        //         break;
-        // }
 
         $op_code = intval($op_code);
 
@@ -442,7 +426,7 @@ function runIntcode($array, $diag = false, $input = 1)
                 switch($mode2)
                 {
                     case 1:
-                        $va2 = $array[$i + 2];
+                        $val2 = $array[$i + 2];
                         break;
                     default:
                         $val2 = $array[$array[$i + 2]];
