@@ -438,14 +438,140 @@ function runIntcode($array, $diag = false, $input = 1)
                 $i += 4;
                 break;
             case 3:
-                $index = $array[$i + 1];
+                switch($mode1)
+                {
+                    case 1:
+                        $index = $array[$array[$i + 1]];
+                        break;
+                    default:
+                        $index = $array[$i + 1];
+                        break;
+                }
 
                 changeValue($array, $index, $input);
                 $i += 2;
                 break;
             case 4:
-                $diag_code = $array[$array[$i+1]];
+                switch($mode1)
+                {
+                    case 1:
+                        $diag_code = $array[$i+1];
+                        break;
+                    default:
+                        $diag_code = $array[$array[$i+1]];
+                    break;
+                }
+
                 $i += 2;
+                break;
+            case 5:
+                switch($mode1)
+                {
+                    case 1:
+                        $val = $array[$i+1];
+                        break;
+                    default: // position mode
+                        $val = $array[$array[$i+1]];
+                        break;
+                }
+
+                if($val != 0)
+                {
+                    switch($mode2)
+                    {
+                        case 1:
+                            $i = $array[$i+2];
+                            break;
+                        default: // position mode
+                            $i = $array[$array[$i+2]];
+                            break;
+                    }
+                }
+                else
+                {
+                    $i += 3;
+                }
+
+                break;
+            case 6:
+                switch($mode1)
+                {
+                    case 1:
+                        $val = $array[$i+1];
+                        break;
+                    default: // position mode
+                        $val = $array[$array[$i+1]];
+                        break;
+                }
+
+                if($val == 0)
+                {
+                    switch($mode2)
+                    {
+                        case 1:
+                            $i = $array[$i+2];
+                            break;
+                        default: // position mode
+                            $i = $array[$array[$i+2]];
+                            break;
+                    }
+                }
+                else
+                {
+                    $i += 3;
+                }
+                break;
+            case 7:
+                switch($mode1)
+                {
+                    case 1:
+                        $val1 = $array[$i+1];
+                        break;
+                    default: // position mode
+                        $val1 = $array[$array[$i+1]];
+                        break;
+                }
+
+                switch($mode2)
+                {
+                    case 1:
+                        $val2 = $array[$i+2];
+                        break;
+                    default: // position mode
+                        $val2 = $array[$array[$i+2]];
+                        break;
+                }
+
+                $index = $array[$i+3];
+                changeValue($array, $index, intval(($val1 < $val2)));
+
+                $i += 4;
+                break;
+            case 8:
+                switch($mode1)
+                {
+                    case 1:
+                        $val1 = $array[$i+1];
+                        break;
+                    default: // position mode
+                        $val1 = $array[$array[$i+1]];
+                        break;
+                }
+
+                switch($mode2)
+                {
+                    case 1:
+                        $val2 = $array[$i+2];
+                        break;
+                    default: // position mode
+                        $val2 = $array[$array[$i+2]];
+                        break;
+                }
+
+                $index = $array[$i+3];
+                changeValue($array, $index, intval(($val1 == $val2)));
+
+                $i += 4;
                 break;
             case 99:
                 // halt op code
@@ -790,5 +916,7 @@ function sunnyWithAChangeOfAstroids($input, $part)
 {
     $array = explode(',', $input);
 
-    return runIntcode($array, true, 1);
+    $diag_id = ($part == 1 ? 1 : 5);
+
+    return runIntcode($array, true, $diag_id);
 }
