@@ -920,3 +920,40 @@ function sunnyWithAChangeOfAstroids($input, $part)
 
     return runIntcode($array, true, $diag_id);
 }
+
+
+// 2019-6
+function universalOrbitMap($input, $part)
+{
+    $orbits = explode(PHP_EOL, $input);
+    $total_orbits = 0;
+
+    // Set universal center of mass
+    $array['COM'] = null;
+
+    foreach($orbits as $orbit)
+    {
+        if(strpos($orbit, ')') !== false)
+        {
+            $relationship = explode(')', $orbit);
+            $array[$relationship[1]] = $relationship[0];
+        }
+    }
+
+    foreach($array as $key => $value)
+    {
+        $total_orbits += numberOfOrbits($key, $array);
+    }
+
+    return $total_orbits;
+}
+
+function numberOfOrbits($planet, $array)
+{
+    if(!is_null($array[$planet]))
+    {
+        return 1 + numberOfOrbits($array[$planet], $array);
+    }
+
+    return 0;
+}
