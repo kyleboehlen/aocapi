@@ -920,3 +920,65 @@ function sunnyWithAChangeOfAstroids($input, $part)
 
     return runIntcode($array, true, $diag_id);
 }
+
+
+// 2019-6
+function universalOrbitMap($input, $part)
+{
+    $orbits = explode(PHP_EOL, $input);
+    $total_orbits = 0;
+
+    // Set universal center of mass
+    $array['COM'] = null;
+
+    // Map orbit relationships to array
+    foreach($orbits as $orbit)
+    {
+        if(strpos($orbit, ')') !== false)
+        {
+            $relationship = explode(')', $orbit);
+            $array[$relationship[1]] = $relationship[0];
+        }
+    }
+
+    if($part === 1)
+    {
+        foreach($array as $key => $value)
+        {
+            $total_orbits += numberOfOrbits($key, $array);
+        }
+
+        return $total_orbits;
+    }
+
+    $current_planet = 'YOU';
+    $number_jumps = 0;
+    while($array[$current_planet] != 'COM')
+    {
+        $destination_planet = 'SAN';
+        $jumps_to = 0;
+        while($array[$destination_planet] != 'COM')
+        {
+            if($array[$destination_planet] == $array[$current_planet])
+            {
+                return ($jumps_to + $number_jumps);
+            }
+
+            $jumps_to++;
+            $destination_planet = $array[$destination_planet];
+        }
+
+        $number_jumps++;
+        $current_planet = $array[$current_planet];
+    }
+}
+
+function numberOfOrbits($planet, $array)
+{
+    if(!is_null($array[$planet]))
+    {
+        return 1 + numberOfOrbits($array[$planet], $array);
+    }
+
+    return 0;
+}

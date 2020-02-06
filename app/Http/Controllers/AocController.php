@@ -102,6 +102,9 @@ class AocController extends Controller
                     case 5:
                         return $this->buildResponse(\sunnyWithAChangeOfAstroids($input, $part));
                         break;
+                    case 6:
+                        return $this->buildResponse(\universalOrbitMap($input, $part));
+                        break;
                     default:
                         return $this->buildResponse("Day $day is not available for $year", 404);
                         break;
