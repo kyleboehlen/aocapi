@@ -931,6 +931,7 @@ function universalOrbitMap($input, $part)
     // Set universal center of mass
     $array['COM'] = null;
 
+    // Map orbit relationships to array
     foreach($orbits as $orbit)
     {
         if(strpos($orbit, ')') !== false)
@@ -940,12 +941,36 @@ function universalOrbitMap($input, $part)
         }
     }
 
-    foreach($array as $key => $value)
+    if($part === 1)
     {
-        $total_orbits += numberOfOrbits($key, $array);
+        foreach($array as $key => $value)
+        {
+            $total_orbits += numberOfOrbits($key, $array);
+        }
+
+        return $total_orbits;
     }
 
-    return $total_orbits;
+    $current_planet = 'YOU';
+    $number_jumps = 0;
+    while($array[$current_planet] != 'COM')
+    {
+        $destination_planet = 'SAN';
+        $jumps_to = 0;
+        while($array[$destination_planet] != 'COM')
+        {
+            if($array[$destination_planet] == $array[$current_planet])
+            {
+                return ($jumps_to + $number_jumps);
+            }
+
+            $jumps_to++;
+            $destination_planet = $array[$destination_planet];
+        }
+
+        $number_jumps++;
+        $current_planet = $array[$current_planet];
+    }
 }
 
 function numberOfOrbits($planet, $array)
